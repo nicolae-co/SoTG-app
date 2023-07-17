@@ -120,9 +120,13 @@ dashboardMatches.addEventListener("click", function (e) {
     console.log(currentAccount);
     updateFormModal();
   }
-  // for (let i = 0; i < btnsOpenModal.length; i++) {
-  //   btnsOpenModal[i].addEventListener("click", openModal);
-  // }
+  const rangeInput = document.getElementById("rules");
+  const displayValue = document.getElementById("score");
+
+  rangeInput.addEventListener("input", (event) => {
+    const currentValue = event.target.value;
+    displayValue.innerHTML = currentValue;
+  });
 
   btnCloseModal.addEventListener("click", closeModal);
   overlay.addEventListener("click", closeModal);
@@ -165,6 +169,7 @@ const updateFormModal = function () {
 
   <form id="form">
                     <label for="rules">Knowledge of the Rules</label>
+                    <p id="score">2</p>
                     <input type="range" id="rules" min="0" max="4" />
                     <label for="contact">Fouls and Body Contact</label>
                     <input type="range" id="contact" min="0" max="4" />

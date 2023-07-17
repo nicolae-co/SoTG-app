@@ -167,6 +167,11 @@ body {
     margin: 0.3rem 3rem;
 }
 
+#form p {
+    text-align: center;
+    font-size: 2rem;
+}
+
 
 footer {
     margin-top: auto;
