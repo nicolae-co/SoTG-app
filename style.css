@@ -143,14 +143,29 @@ body {
     transform: translate(-50%, -50%);
     width: 90%;
     height: 90%;
-
     background-color: white;
-    padding: 6rem;
+
     border-radius: 5px;
     box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
     z-index: 10;
 }
 
+#form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8rem;
+}
+
+
+#form input {
+    font-size: 1.4rem;
+    margin: 0.6rem 3rem;
+}
+
+#form label {
+    font-size: 1.4rem;
+    margin: 0.3rem 3rem;
+}
 
 
 footer {
