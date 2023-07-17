@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+    <title>Spirit of The Game</title>
+  </head>
+  <body>
+    <!-- LOGIN -->
+    <div class="login visible">
+      <div>
+        <img class="login__logo" src="./assets/logoTurneu.png" />
+        <h1>Spirit of the Game</h1>
+      </div>
+      <form class="login__form">
+        <input
+          type="text"
+          placeholder="username"
+          class="login__input login__input--user"
+        />
+        <!-- In practice, use type="password" -->
+        <input
+          type="text"
+          placeholder="password"
+          class="login__input login__input--pin"
+        />
+        <button class="login__btn">UP!</button>
+      </form>
+    </div>
+
+    <!-- TEAM DASHBOARD -->
+    <div class="dashboard hidden">
+      <img class="dashboard__team--logo team__logo" src="" />
+      <div class="dashboard__matches"></div>
+    </div>
+
+    <!-- MATCHES FORM -->
+
+    <div class="form__modal hidden">
+      <button class="close-modal">&times;</button>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>Created & Designed by: <span>Nicolae Cojocaru</span></p>
+      <div>
+        <p>Powered by</p>
+        <img src="./assets/logoEndzone.svg" />
+      </div>
+    </footer>
+  </body>
+</html>
