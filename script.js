@@ -23,11 +23,6 @@ const account1 = {
   username: "a",
   password: "a",
   logo: "./assets/logoEndzone.svg",
-  games: {
-    account2: "",
-    account3: "",
-    account4: "",
-  },
 };
 
 const account2 = {
@@ -35,11 +30,6 @@ const account2 = {
   username: "b",
   password: "b",
   logo: "./assets/logoTuf.png",
-  games: {
-    account1: "",
-    account3: "",
-    account4: "",
-  },
 };
 
 const account3 = {
@@ -47,11 +37,6 @@ const account3 = {
   username: "c",
   password: "c",
   logo: "./assets/logoJets.png",
-  games: {
-    account1: "",
-    account2: "",
-    account4: "",
-  },
 };
 
 const account4 = {
@@ -59,21 +44,67 @@ const account4 = {
   username: "d",
   password: "d",
   logo: "./assets/logoNuf.png",
-  games: {
-    account1: "",
-    account2: "",
-    account3: "",
-  },
 };
 
-const accounts = [account1, account2, account3, account4];
+const account5 = {
+  team: "CatchIt",
+  username: "e",
+  password: "e",
+  logo: "./assets/logoTurneu.png",
+};
+
+const itemValue = localStorage.getItem("roundRobinResults");
+
+let roundRobinResults;
+
+if (itemValue !== null) {
+  // Item exists in local storage
+  roundRobinResults = itemValue;
+  console.log(roundRobinResults);
+} else {
+  // Item does not exist in local storage
+  roundRobinResults = {
+    Endzone: {
+      TUF: { submited: false },
+      NUF: { submited: false },
+      Jets: { submited: false },
+      CatchIt: { submited: false },
+    },
+    TUF: {
+      Endzone: { submited: false },
+      NUF: { submited: false },
+      Jets: { submited: false },
+      CatchIt: { submited: false },
+    },
+    NUF: {
+      TUF: { submited: false },
+      Endzone: { submited: false },
+      Jets: { submited: false },
+      CatchIt: { submited: false },
+    },
+    Jets: {
+      TUF: { submited: false },
+      NUF: { submited: false },
+      Endzone: { submited: false },
+      CatchIt: { submited: false },
+    },
+    CatchIt: {
+      TUF: { submited: false },
+      NUF: { submited: false },
+      Jets: { submited: false },
+      Endzone: { submited: false },
+    },
+  };
+  console.log(roundRobinResults);
+}
+
+const accounts = [account1, account2, account3, account4, account5];
 
 const containerLogin = document.querySelector(".login");
 const containerDashboard = document.querySelector(".dashboard");
 const dashboardTeamLogo = document.querySelector(".dashboard__team--logo");
 const dashboardMatches = document.querySelector(".dashboard__matches");
 
-const modal = document.querySelector(".form__modal");
 const overlay = document.querySelector(".overlay");
 
 const btnLogin = document.querySelector(".login__btn");
@@ -92,45 +123,10 @@ for (let i = 0; i < accounts.length; i++) {
     const team2 = accounts[j].team;
 
     // Create a new object with the combination and add it to the new array
-    const combination = {
-      [team1]: {
-        [team2]: "",
-      },
-      [team2]: { [team1]: "" },
-    };
+    const combination = [team1, team2];
     games.push(combination);
   }
 }
-
-dashboardMatches.addEventListener("click", function (e) {
-  const clicked = e.target.closest(".match");
-  console.log(clicked.dataset.team1);
-  const openModal = function () {
-    modal.classList.remove("hidden");
-    overlay.classList.remove("hidden");
-  };
-
-  const closeModal = function () {
-    modal.classList.add("hidden");
-    overlay.classList.add("hidden");
-  };
-
-  if (clicked) {
-    openModal();
-    console.log(currentAccount);
-    updateFormModal();
-  }
-  const rangeInput = document.getElementById("rules");
-  const displayValue = document.getElementById("score");
-
-  rangeInput.addEventListener("input", (event) => {
-    const currentValue = event.target.value;
-    displayValue.innerHTML = currentValue;
-  });
-
-  btnCloseModal.addEventListener("click", closeModal);
-  overlay.addEventListener("click", closeModal);
-});
 
 btnLogin.addEventListener("click", function (event) {
   event.preventDefault();
@@ -146,51 +142,105 @@ btnLogin.addEventListener("click", function (event) {
     dashboardTeamLogo.src = currentAccount.logo;
   }
 
-  displayGames(currentAccount, currentAccount.team);
-  console.log(games);
+  displayGames(currentAccount.team);
 });
 
 const displayGames = function (key) {
   for (let game of games) {
-    if (game.hasOwnProperty(key.team)) {
-      console.log("test");
+    if (game.includes(key)) {
       const match = document.createElement("h1");
-      match.dataset.team1 = Object.keys(game)[0];
-      match.dataset.team2 = Object.keys(game)[1];
+      match.dataset.game = `${game[0]}-${game[1]}`;
+      match.dataset.opponent = `${game[game.findIndex((el) => el !== key)]}`;
+      match.textContent = `${game[0]} - ${game[1]}`;
       match.className = "match";
-      match.textContent = `${Object.keys(game)[0]} - ${Object.keys(game)[1]}`;
       dashboardMatches.appendChild(match);
+
+      const markup = `
+                      <form class='spirit__form hidden' data-game=${match.dataset.game} data-opponent= ${match.dataset.opponent}>
+                        <label for="${match.dataset.game}-rules">Knowledge of the Rules</label>
+                        <p id="score">2</p>
+                        <input type="range" id="${match.dataset.game}-rules" min="0" max="4" /> 
+                        <label for="${match.dataset.game}-contact">Fouls and Body Contact</label>
+                        <input type="range" id="${match.dataset.game}-contact" min="0" max="4" />   
+                        <label for="${match.dataset.game}-fair-minddness">Fair-Mindeness</label>
+                        <input type="range" id="${match.dataset.game}-fair-minddness" min="0" max="4" />
+                        <label for="${match.dataset.game}-self-control">Positive Attitude and Self Control</label>  
+                        <input type="range" id="${match.dataset.game}-self-control" min="0" max="4" />
+                        <label for="${match.dataset.game}-communication">Communications</label>
+                        <input type="range" id="${match.dataset.game}-communication" min="0" max="4" />
+                        <button type="submit">Submit</button>
+                      </form>`;
+      dashboardMatches.insertAdjacentHTML("beforeend", markup);
     }
   }
-};
-
-const updateFormModal = function () {
-  const markup = `
-
-  <form id="form">
-                    <label for="rules">Knowledge of the Rules</label>
-                    <p id="score">2</p>
-                    <input type="range" id="rules" min="0" max="4" />
-                    <label for="contact">Fouls and Body Contact</label>
-                    <input type="range" id="contact" min="0" max="4" />
-                    <label for="fair-minddness">Fair-Mindeness</label>
-                    <input type="range" id="fair-minddness" min="0" max="4" />
-                    <label for="self-control">Positive Attitude and Self Control</label>
-                    <input type="range" id="self-control" min="0" max="4" />
-                    <label for="communication">Communications</label>
-                    <input type="range" id="communication" min="0" max="4" />
-                  </form>`;
-  modal.insertAdjacentHTML("afterbegin", markup);
-};
-
-function filterByKeys(data, key1, key2) {
-  const matchingPairs = [];
-
-  for (const [index, obj] of Object.entries(data)) {
-    if (obj.hasOwnProperty(key1) && obj.hasOwnProperty(key2)) {
-      matchingPairs.push({ [index]: obj });
-    }
+  function toggleForms(dataGame) {
+    const forms = document.querySelectorAll(".spirit__form");
+    forms.forEach((form) => {
+      if (form.getAttribute("data-game") === dataGame) {
+        form.classList.toggle("hidden");
+      }
+    });
   }
 
-  console.log(matchingPairs);
-}
+  // Event listener for each h1 element
+  const h1Elements = document.querySelectorAll(".match");
+  h1Elements.forEach((h1) => {
+    h1.addEventListener("click", () => {
+      const dataGame = h1.getAttribute("data-game");
+      toggleForms(dataGame);
+    });
+  });
+
+  // Event listener for form submission
+  const forms = document.querySelectorAll(".spirit__form");
+  forms.forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      // Access form data
+      let rules = document.getElementById(`${form.dataset.game}-rules`).value;
+      let contact = document.getElementById(
+        `${form.dataset.game}-contact`
+      ).value;
+      let fairMinddness = document.getElementById(
+        `${form.dataset.game}-fair-minddness`
+      ).value;
+      let selfControl = document.getElementById(
+        `${form.dataset.game}-self-control`
+      ).value;
+      let communication = document.getElementById(
+        `${form.dataset.game}-communication`
+      ).value;
+
+      for (let key in roundRobinResults) {
+        if (key === currentAccount.team) {
+          console.log("test");
+          console.log(key);
+          for (let opp in roundRobinResults[key]) {
+            console.log(!roundRobinResults[key][opp].submited);
+            if (
+              opp === form.dataset.opponent &&
+              !roundRobinResults[key][opp].submited
+            ) {
+              roundRobinResults[key][opp].submited = true;
+              console.log(!roundRobinResults[key][opp].submited);
+              roundRobinResults[key][opp].scores = {
+                rules: rules,
+                contact: contact,
+                fairMinddness: fairMinddness,
+                selfControl: selfControl,
+                communication: communication,
+              };
+            }
+          }
+        }
+      }
+
+      // Clear form fields (optional)
+      const roundRobinResultsJSON = JSON.stringify(roundRobinResults);
+
+      localStorage.setItem("roundRobinResults", roundRobinResultsJSON);
+      console.log(roundRobinResults);
+      form.reset();
+    });
+  });
+};
