@@ -127,9 +127,21 @@ body {
 }
 
 .spirit__form input {
+
     width: 80%;
     margin-bottom: 2rem;
 }
+
+.spirit__form input::-webkit-slider-thumb {
+
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+
 
 .spirit__form button {
     font-size: 2rem;
