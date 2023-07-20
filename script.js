@@ -65,6 +65,7 @@ const accounts = [account1, account2, account3, account4, account5];
 
 const containerLogin = document.querySelector(".login");
 const containerDashboard = document.querySelector(".dashboard");
+const navBar = document.querySelector(".top-nav");
 const dashboardTeamLogo = document.querySelector(".dashboard__team--logo");
 const dashboardMatches = document.querySelector(".dashboard__matches");
 
@@ -98,6 +99,8 @@ btnLogin.addEventListener("click", function (event) {
     (acc) => acc.username === inputLoginUsername.value
   );
   if (currentAccount?.password === inputLoginPass.value) {
+    navBar.classList.remove("hidden");
+    navBar.classList.add("visible");
     containerLogin.classList.remove("visible");
     containerLogin.classList.add("hidden");
     containerDashboard.classList.remove("hidden");
