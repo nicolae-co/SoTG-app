@@ -116,10 +116,12 @@ btnLogin.addEventListener("click", function (event) {
       }
     }
     submitForms();
+    endRobin();
     console.log(roundRobinResults);
+    console.log(window.location.href === "index.html");
   }
 });
-
+console.log(window.location.href);
 const displayGames = function (key, game) {
   const opponent = game[game.findIndex((el) => el !== key)];
   const curGame = curTeam + opponent;
@@ -293,4 +295,15 @@ function updateScore(inputId, pId) {
   const inputElement = document.getElementById(inputId);
   const pElement = document.getElementById(pId);
   pElement.textContent = inputElement.value; // Update the <p> tag with the input value
+}
+
+function endRobin() {
+  if (
+    roundRobinResults.length ===
+    (accounts.length * (accounts.length - 1)) / 2
+  ) {
+    const h1 = document.createElement("h1");
+    h1.textContent = "semifinale, finale";
+    dashboardMatches.appendChild(h1);
+  }
 }
